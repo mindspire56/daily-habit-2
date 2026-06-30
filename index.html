@@ -170,48 +170,6 @@ document.getElementById('addBtn').addEventListener('click',function(){AD(documen
 document.getElementById('inp').addEventListener('keydown',function(e){if(e.key==='Enter'){AD(e.target.value);e.target.value=''}});
 var mp=false,ae=document.getElementById('bgm'),mb=document.getElementById('mbtn');ae.volume=.3;
 mb.addEventListener('click',function(){if(mp){ae.pause();mp=false;mb.classList.remove('on')}else{ae.play().then(function(){mp=true;mb.classList.add('on')}).catch(function(){TS('\u70B9\u51FB\u9875\u9762\u540E\u518D\u70B9\u64AD\u653E')})}});
-
-// V2: Mode tabs + skip buttons
-// This code runs after V1's R() to add extra features
-(function(){
-// Add mode tabs HTML
-var mtDiv = document.getElementById('mtabs');
-if(!mtDiv) return;
-var modes = {focus:{lb:'专注',ids:['read','meditate','code'],co:'#e8835a'},rest:{lb:'恢复',ids:['stretch','water','meditate'],co:'#7dbf7d'},learn:{lb:'学习',ids:['read'],co:'#e8c84a'}};
-var activeMode = 'focus';
-function renderModes(){
-var modeKeys = Object.keys(modes);
-var h = '';
-modeKeys.forEach(function(k){
-var m = modes[k];
-h += '<button class="mtab' + (k === activeMode ? ' on' : '') + '" data-mode="' + k + '">' + m.lb + '<'+'/button>';
-});
-mtDiv.innerHTML = h;
-}
-renderModes();
-// Mode switching
-mtDiv.addEventListener('click', function(e){
-var btn = e.target.closest('.mtab');
-if(!btn) return;
-activeMode = btn.dataset.mode;
-var m = modes[activeMode];
-document.documentElement.style.setProperty('--accent', m.co);
-document.documentElement.style.setProperty('--accent-bg', m.co + '22');
-renderModes();
-// Filter habits
-var cards = document.querySelectorAll('.hcard');
-cards.forEach(function(c){
-var id = c.dataset.id;
-var modeIds = modes[activeMode].ids || [];
-if(modeIds.indexOf(id) >= 0 || modeIds.length === 0){
-c.style.display = 'flex';
-} else {
-c.style.display = 'none';
-}
-});
-});
-})();
-
 R();
 })();
 </script>
