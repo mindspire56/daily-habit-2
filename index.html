@@ -24,7 +24,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC
 .hd-s-item{display:flex;flex-direction:column;align-items:center}
 .hd-s-item .num{font-size:26px;font-weight:700;color:#e8835a}
 .hd-s-item .label{font-size:12px;color:#b29595;margin-top:1px}
-.cal-btn{display:inline-flex;align-items:center;gap:5px;background:#fff;border:none;border-radius:10px;padding:6px 14px;font-size:13px;color:#9a7a7a;cursor:pointer;transition:all .2s;margin-top:10px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
+.<div class="mtabs" id="mtabs"></div>
+cal-btn{display:inline-flex;align-items:center;gap:5px;background:#fff;border:none;border-radius:10px;padding:6px 14px;font-size:13px;color:#9a7a7a;cursor:pointer;transition:all .2s;margin-top:10px;box-shadow:0 1px 4px rgba(0,0,0,.04)}
 .cal-btn:hover{color:#e8835a}
 .cal-box{background:#fff;border-radius:16px;padding:18px;margin-bottom:16px;box-shadow:0 2px 12px rgba(0,0,0,.06);display:none}
 .cal-box.show{display:block}
@@ -83,6 +84,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"PingFang SC
 .cf-p{position:absolute;width:8px;height:8px;border-radius:2px;animation:cfF linear forwards}
 @keyframes cfF{0%{opacity:1;transform:translateY(-10px) rotate(0deg)}100%{opacity:0;transform:translateY(100vh) rotate(720deg)}}
 @media(max-width:420px){.container{padding:24px 16px 90px}.hd-title{font-size:22px}.hcard{padding:12px 16px}.chk{width:44px;height:44px;font-size:18px}.hico{font-size:28px;width:38px}.hinf .nm{font-size:15px}.del{opacity:1}.ms-in{gap:24px}.cal-box{padding:14px}}
+.mtabs{display:flex;gap:6px;justify-content:center;margin:10px 0 14px}
+.mtab{padding:5px 16px;border-radius:20px;border:1.5px solid #e0d5c8;background:transparent;font-size:13px;font-weight:500;color:#b29595;cursor:pointer;transition:all .25s}
+.mtab:hover{border-color:var(--accent);color:var(--accent)}.mtab.on{background:var(--accent);border-color:var(--accent);color:#fff}
 </style>
 </head>
 <body>
@@ -171,6 +175,18 @@ document.getElementById('inp').addEventListener('keydown',function(e){if(e.key==
 var mp=false,ae=document.getElementById('bgm'),mb=document.getElementById('mbtn');ae.volume=.3;
 mb.addEventListener('click',function(){if(mp){ae.pause();mp=false;mb.classList.remove('on')}else{ae.play().then(function(){mp=true;mb.classList.add('on')}).catch(function(){TS('\u70B9\u51FB\u9875\u9762\u540E\u518D\u70B9\u64AD\u653E')})}});
 R();
+
+// V2 mode tabs
+(function(){
+var mt=document.getElementById('mtabs');if(!mt)return;
+var modes={focus:{lb:'专注',ids:['read','meditate','code'],co:'#e8835a'},rest:{lb:'恢复',ids:['stretch','water','meditate'],co:'#7dbf7d'},learn:{lb:'学习',ids:['read'],co:'#e8c84a'}};
+var active='focus';
+function rt(){
+var h='';Object.keys(modes).forEach(function(k){var m=modes[k];h+='<button class="mtab'+(k===active?' on':'')+'" data-mode="'+k+'">'+m.lb+'\x3C/button>'});mt.innerHTML=h;
+var m=modes[active];if(m){document.documentElement.style.setProperty('--accent',m.co);document.documentElement.style.setProperty('--accent-bg',m.co+'22')}}
+rt();
+mt.addEventListener('click',function(e){var b=e.target.closest('.mtab');if(!b)return;active=b.dataset.mode;rt();});
+})();
 })();
 </script>
 </body>
